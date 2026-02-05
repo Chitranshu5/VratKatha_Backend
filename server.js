@@ -11,15 +11,8 @@ dotenv.config();
 console.log("🔥 Server file started");
 
 const app = express();
-
-/* =========================
-   RAILWAY TRUST PROXY
-========================= */
 app.set("trust proxy", 1);
 
-/* =========================
-   MIDDLEWARES
-========================= */
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -31,29 +24,20 @@ app.use(
   })
 );
 
-/* =========================
-   ROUTES
-========================= */
 app.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "🚀 Server is running successfully",
-  });
+  res.json({ success: true, message: "🚀 Server is running successfully" });
 });
 
-/* =========================
-   SERVER
-========================= */
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 
-/* =========================
-   START SERVER (CRITICAL FIX)
-========================= */
 server.listen(PORT, "0.0.0.0", () => {
-  console.log(`✅ Server listening on 0.0.0.0:${PORT}`);
+  console.log(`✅ Server listening on ${PORT}`);
 
-  // DB connection AFTER server starts
   connectToDatabase()
     .then(() => console.log("✅ MongoDB connected"))
     .catch((err) =>
