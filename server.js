@@ -10,14 +10,10 @@ dotenv.config();
 
 const app = express();
 
-/* =========================
-   TRUST PROXY (Railway)
-========================= */
+
 app.set("trust proxy", 1);
 
-/* =========================
-   MIDDLEWARES
-========================= */
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -29,9 +25,7 @@ app.use(
   })
 );
 
-/* =========================
-   ROUTES
-========================= */
+
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -39,15 +33,11 @@ app.get("/", (req, res) => {
   });
 });
 
-/* =========================
-   SERVER SETUP (HTTP)
-========================= */
+
 const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 
-/* =========================
-   START SERVER
-========================= */
+
 const startServer = async () => {
   try {
     await connectToDatabase();
