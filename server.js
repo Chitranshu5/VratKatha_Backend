@@ -8,6 +8,8 @@ import { connectToDatabase } from "./model/db.js";
 
 dotenv.config();
 
+console.log("🔥 Server file started");
+
 const app = express();
 
 /* =========================
@@ -46,17 +48,15 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 /* =========================
-   START SERVER FIRST
+   START SERVER (CRITICAL FIX)
 ========================= */
-server.listen(PORT, () => {
-  console.log(`✅ Server listening on port ${PORT}`);
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server listening on 0.0.0.0:${PORT}`);
 
-  // Connect DB AFTER server is live
+  // DB connection AFTER server starts
   connectToDatabase()
-    .then(() => {
-      console.log("✅ MongoDB connected");
-    })
-    .catch((err) => {
-      console.error("❌ MongoDB connection failed:", err.message);
-    });
+    .then(() => console.log("✅ MongoDB connected"))
+    .catch((err) =>
+      console.error("❌ MongoDB connection failed:", err.message)
+    );
 });
